@@ -69,7 +69,6 @@ class Provider {
         if (!data?.items) return [];
 
         const langChapters: ChapterDetails[] = data.items.map((chapter: any, i: number) => {
-            console.log((page * 200) - 200 + i)
             return {
                 id: `${chapter.id}`,
                 url: "https://mangafire.to/title/" + mangaId,
