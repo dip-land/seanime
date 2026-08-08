@@ -8,5 +8,5 @@
     "skipLibCheck": true,
     "types": []
   },
-  "include": ["payload.ts", "d.ts/**/*.d.ts"]
+  "include": ["payload.ts", "../../d.ts/core.d.ts", "../../d.ts/onlinestream-provider.d.ts"]
 }
