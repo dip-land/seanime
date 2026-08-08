@@ -1,5 +1,5 @@
 class Provider {
-    private api = 'https://mangafire.to';
+    private baseURL = 'https://mangafire.to';
 
     getSettings(): Settings {
         return {
@@ -9,7 +9,7 @@ class Provider {
     }
 
     async search(opts: { query: string }): Promise<SearchResult[]> {
-        const url = `${this.api}/api/titles?keyword=${opts.query.replace(/\s+/g, '+')}&content_rating%5B%5D=safe&content_rating%5B%5D=suggestive&order%5Brelevance%5D=desc&page=1&limit=30`;
+        const url = `${this.baseURL}/api/titles?keyword=${opts.query.replace(/\s+/g, '+')}&content_rating%5B%5D=safe&content_rating%5B%5D=suggestive&order%5Brelevance%5D=desc&page=1&limit=30`;
         const res = await fetch(this.generate(url));
         const data = await res.json();
 
@@ -25,7 +25,7 @@ class Provider {
     }
 
     async findChapters(mangaId: string): Promise<ChapterDetails[]> {
-        const url = `${this.api}/api/titles/${mangaId}`;
+        const url = `${this.baseURL}/api/titles/${mangaId}`;
         const res = await fetch(this.generate(url));
         const data = await res.json();
 
@@ -42,7 +42,7 @@ class Provider {
     }
 
     async findChapterPages(chapterId: string): Promise<ChapterPage[]> {
-        const url = `${this.api}/api/chapters/${chapterId}`;
+        const url = `${this.baseURL}/api/chapters/${chapterId}`;
         const res = await fetch(this.generate(url));
         const data = await res.json();
 
@@ -52,14 +52,14 @@ class Provider {
             url: value.url,
             index: i,
             headers: {
-                Referer: `${this.api}/`,
+                Referer: `${this.baseURL}/`,
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36',
             },
         }));
     }
 
     private async fetchChaptersForLanguage(mangaId: string, lang: string, page: number): Promise<ChapterDetails[]> {
-        const url = `${this.api}/api/titles/${mangaId}/chapters?language=${lang}&sort=number&order=asc&page=${page}&limit=200`;
+        const url = `${this.baseURL}/api/titles/${mangaId}/chapters?language=${lang}&sort=number&order=asc&page=${page}&limit=200`;
         const res = await fetch(this.generate(url));
         const data = await res.json();
 
