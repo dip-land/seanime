@@ -9,7 +9,6 @@ class Provider {
     }
 
     async search(opts: { query: string }): Promise<SearchResult[]> {
-        console.log(opts.query.replace(/\s+/g, '+'))
         const url = `${this.api}/api/titles?keyword=${opts.query.replace(/\s+/g, '+')}&content_rating%5B%5D=safe&content_rating%5B%5D=suggestive&order%5Brelevance%5D=desc&page=1&limit=30`;
         const res = await fetch(this.generate(url));
         const data = await res.json();
