@@ -31,11 +31,9 @@ class Provider {
 
         const allChapters: ChapterDetails[] = [];
 
-        for (let page = 1; page <= Math.ceil(data.data.latestChapter / 200); page++) {
-            for (const lang of data.data.languages) {
-                const chapters = await this.fetchChaptersForLanguage(mangaId, lang, page);
-                allChapters.push(...chapters);
-            }
+        for (const lang of data.data.languages) {
+            const chapters = await this.fetchChaptersForLanguage(mangaId, lang);
+            allChapters.push(...chapters);
         }
 
         return allChapters;
@@ -58,24 +56,39 @@ class Provider {
         }));
     }
 
-    private async fetchChaptersForLanguage(mangaId: string, lang: string, page: number): Promise<ChapterDetails[]> {
-        const url = `${this.baseURL}/api/titles/${mangaId}/chapters?language=${lang}&sort=number&order=asc&page=${page}&limit=200`;
+    private async fetchChaptersForLanguage(mangaId: string, lang: string): Promise<ChapterDetails[]> {
+        const url = `${this.baseURL}/api/titles/${mangaId}/chapters?language=${lang}&sort=number&order=asc&page=1&limit=200`;
         const res = await fetch(this.generate(url));
-        const data = await res.json();
+        const mangaData = await res.json();
 
-        if (!data?.items) return [];
+        if (!mangaData?.items) return [];
 
-        const langChapters: ChapterDetails[] = data.items.map((chapter: any, i: number) => {
-            return {
-                id: `${chapter.id}`,
-                url: 'https://mangafire.to/title/' + mangaId,
-                title: !chapter.name.trim() ? `Chapter ${chapter.number}` : chapter.name,
-                index: page * 200 - 200 + i,
-                chapter: `${chapter.number}`,
-                language: this.normalizeLanguageCode(lang),
-                updatedAt: `${chapter.createdAt}`,
-            };
-        });
+        const pages = mangaData.meta.lastPage;
+        let langChapters: ChapterDetails[] = [];
+
+        for (let page = 1; page <= pages; page++) {
+            let data: any = mangaData;
+            if (page > 1) {
+                const url = `${this.baseURL}/api/titles/${mangaId}/chapters?language=${lang}&sort=number&order=asc&page=${page}&limit=200`;
+                const res = await fetch(this.generate(url));
+                const mangaData = await res.json();
+
+                data = mangaData;
+            }
+            langChapters.push(
+                ...data.items.map((chapter: any, i: number) => {
+                    return {
+                        id: `${chapter.id}`,
+                        url: 'https://mangafire.to/title/' + mangaId,
+                        title: !chapter.name.trim() ? `Chapter ${chapter.number}` : chapter.name,
+                        index: page * 200 - 200 + i,
+                        chapter: `${chapter.number}`,
+                        language: this.normalizeLanguageCode(lang),
+                        updatedAt: `${chapter.createdAt}`,
+                    };
+                }),
+            );
+        }
 
         return langChapters;
     }
