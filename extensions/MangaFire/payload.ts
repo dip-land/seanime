@@ -4,7 +4,7 @@ class Provider {
     getSettings(): Settings {
         return {
             supportsMultiLanguage: true,
-            supportsMultiScanlator: false,
+            supportsMultiScanlator: true,
         };
     }
 
@@ -80,10 +80,11 @@ class Provider {
                     return {
                         id: `${chapter.id}`,
                         url: 'https://mangafire.to/title/' + mangaId,
-                        title: !chapter.name.trim() ? `Chapter ${chapter.number}` : chapter.name,
+                        title: !chapter.name.trim() ? `Chapter ${chapter.number}` : chapter.name.startsWith('(1r0n)') ? `Chapter ${chapter.number}` : chapter.name,
                         index: page * 200 - 200 + i,
                         chapter: `${chapter.number}`,
                         language: this.normalizeLanguageCode(lang),
+                        scanlator: chapter.type,
                         updatedAt: `${chapter.createdAt}`,
                     };
                 }),
