@@ -1,0 +1,26 @@
+[
+    {
+        "id": "dip-land_mangaball",
+        "name": "MangaBall",
+        "description": "Multi language manga provider. (Requires Aqua's Utils)",
+        "author": "dip-land",
+        "type": "manga-provider",
+        "language": "typescript",
+        "lang": "multi",
+        "icon": "https://raw.githubusercontent.com/dip-land/seanime/main/extensions/MangaBall/icon.png",
+        "website": "https://github.com/dip-land/seanime",
+        "manifestURI": "https://raw.githubusercontent.com/dip-land/seanime/main/extensions/MangaBall/manifest.json"
+    },
+    {
+        "id": "dip-land_mangafire",
+        "name": "MangaFire",
+        "description": "Multi language manga provider.",
+        "author": "dip-land",
+        "type": "manga-provider",
+        "language": "typescript",
+        "lang": "multi",
+        "icon": "https://raw.githubusercontent.com/dip-land/seanime/main/extensions/MangaFire/icon.png",
+        "website": "https://github.com/dip-land/seanime",
+        "manifestURI": "https://raw.githubusercontent.com/dip-land/seanime/main/extensions/MangaFire/manifest.json"
+    }
+]
