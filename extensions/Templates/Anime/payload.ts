@@ -6,7 +6,7 @@ class Provider {
         };
     }
 
-    async search(query: SearchOptions): Promise<SearchResult[]> {
+    async search(opts: SearchOptions): Promise<SearchResult[]> {
         return [
             {
                 id: '',
